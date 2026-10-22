@@ -183,6 +183,12 @@ CORS_ALLOWED_ORIGINS = config(
     cast=Csv(),
 )
 CORS_ALLOW_CREDENTIALS = True
+# Optional regex patterns for origins (useful for ephemeral tunnel hosts).
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    pattern
+    for pattern in config("DJANGO_CORS_ALLOWED_ORIGIN_REGEXES", default="", cast=Csv())
+    if pattern
+]
 
 # --------------------------------------------------------------------------- email
 EMAIL_BACKEND = config(

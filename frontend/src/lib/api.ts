@@ -1,7 +1,20 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { useAuthStore } from "@/store/auth";
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
+declare global {
+  interface Window {
+    __APP_CONFIG__?: { apiBaseUrl?: string };
+  }
+}
+
+function resolveBaseUrl() {
+  if (typeof window !== "undefined" && window.__APP_CONFIG__?.apiBaseUrl) {
+    return window.__APP_CONFIG__.apiBaseUrl;
+  }
+  return process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
+}
+
+const baseURL = resolveBaseUrl();
 
 export const api = axios.create({
   baseURL,
