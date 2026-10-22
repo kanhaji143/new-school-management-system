@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Smart School Manager — UI Preview</title>
+<style>
+  :root{
+    --bg:#ffffff; --fg:#0f172a; --card:#ffffff; --muted:#f1f5f9; --muted-fg:#64748b;
+    --primary:#2563eb; --primary-fg:#ffffff; --border:#e2e8f0; --accent:#f1f5f9;
+    --destructive:#dc2626; --radius:8px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg);color:var(--fg);font-size:14px}
+  .app{display:flex;min-height:100vh}
+  /* sidebar */
+  aside{width:240px;border-right:1px solid var(--border);background:var(--card);
+    display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+  .brand{height:64px;display:flex;align-items:center;gap:8px;padding:0 24px;
+    font-weight:600;border-bottom:1px solid var(--border)}
+  .brand .logo{width:20px;height:20px;color:var(--primary)}
+  nav{flex:1;padding:12px}
+  nav a{display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:6px;
+    margin-bottom:4px;color:var(--muted-fg);text-decoration:none;font-weight:500}
+  nav a:hover{background:var(--accent)}
+  nav a.active{background:var(--primary);color:var(--primary-fg)}
+  nav a svg{width:16px;height:16px}
+  /* main */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  header{position:sticky;top:0;z-index:10;height:64px;display:flex;align-items:center;
+    gap:12px;padding:0 24px;border-bottom:1px solid var(--border);background:var(--bg)}
+  header .spacer{margin-left:auto}
+  .iconbtn{width:36px;height:36px;border-radius:6px;border:none;background:transparent;
+    color:var(--fg);cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+  .iconbtn:hover{background:var(--accent)}
+  main{padding:24px;max-width:1200px}
+  h1{font-size:22px;margin:0}
+  .sub{color:var(--muted-fg);font-size:13px;margin-top:4px}
+  .grid{display:grid;gap:16px}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:900px){.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr}aside{display:none}}
+  .card{border:1px solid var(--border);border-radius:var(--radius);background:var(--card);
+    box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  .card .pad{padding:20px}
+  .card .ph{padding:16px 20px 8px}
+  .card .pt{font-size:13px;font-weight:500;color:var(--muted-fg)}
+  .card .pb{padding:0 20px 20px;font-size:24px;font-weight:700}
+  .quick{display:block;text-decoration:none;color:inherit;border:1px solid var(--border);
+    border-radius:var(--radius);padding:16px;transition:.15s}
+  .quick:hover{border-color:var(--primary)}
+  .quick .qt{font-weight:600;margin-bottom:6px}
+  .quick .qd{color:var(--muted-fg);font-size:13px}
+  .badge{display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;
+    font-size:11px;font-weight:600;background:var(--muted);color:var(--fg)}
+  .badge.primary{background:var(--primary);color:#fff}
+  .toolbar{display:flex;gap:8px;margin:20px 0}
+  .btn{height:36px;padding:0 14px;border-radius:6px;border:1px solid var(--border);
+    background:var(--bg);cursor:pointer;font-weight:500}
+  .btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+  /* table */
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px}
+  th{color:var(--muted-fg);font-weight:600;background:var(--muted)}
+  /* login */
+  .login{min-height:100vh;display:flex;align-items:center;justify-content:center;
+    background:var(--muted);padding:16px}
+  .login .box{width:100%;max-width:400px;background:var(--card);border:1px solid var(--border);
+    border-radius:var(--radius);padding:24px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  .field{margin-top:16px}
+  .field label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+  .field input{width:100%;height:40px;border:1px solid var(--border);border-radius:6px;
+    padding:0 12px;font-size:14px}
+  .block{display:none}
+  .block.show{display:block}
+  .pill{display:inline-block;background:#eef2ff;color:#3730a3;border-radius:6px;padding:2px 8px;font-size:12px}
+  .muted{color:var(--muted-fg)}
+  .alert{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:8px;padding:12px;font-size:13px;margin-top:16px}
+  .alert.ok{background:#f0fdf4;border-color:#bbf7d0;color:#166534}
+  .warn{background:#fefce8;border:1px solid #fde68a;color:#854d0e}
+</style>
+</head>
+<body>
+
+<!-- ===================== LOGIN ===================== -->
+<div id="view-login" class="block">
+  <div class="login">
+    <div class="box">
+      <h1 style="font-size:22px">Sign in</h1>
+      <p class="sub">Smart School &amp; College Management</p>
+      <div class="field"><label>Email</label><input value="admin@demo.school" /></div>
+      <div class="field"><label>Password</label><input type="password" value="Demo@12345" /></div>
+      <button class="btn primary" style="width:100%;margin-top:20px;height:40px"
+        onclick="show('dashboard')">Sign in</button>
+      <p class="muted" style="text-align:center;margin-top:14px">New institution? <a href="#" onclick="show('dashboard');return false">Register</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== APP SHELL ===================== -->
+<div id="view-dashboard" class="app block">
+  <aside>
+    <div class="brand"><svg class="logo" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a3 3 0 0 0-3 3v1H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2V5a3 3 0 0 0-3-3zm0 2a1 1 0 0 1 1 1v1h-2V5a1 1 0 0 1 1-1z"/></svg>Smart School</div>
+    <nav id="nav">
+      <a href="#" data-view="dashboard" class="active" onclick="show('dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+      <a href="#" data-view="students" onclick="show('students')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Students</a>
+      <a href="#" data-view="timetable" onclick="show('timetable')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Timetable</a>
+      <a href="#" data-view="attendance" onclick="show('attendance')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Attendance</a>
+      <a href="#" data-view="substitution" onclick="show('substitution')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>Substitution</a>
+      <a href="#" data-view="assessments" onclick="show('assessments')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/></svg>Assessments</a>
+      <a href="#" data-view="ai" onclick="show('ai')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>AI Studio</a>
+      <a href="#" data-view="settings" onclick="show('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06"/></svg>Settings</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header>
+      <button class="iconbtn" title="Menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+      <div class="spacer"></div>
+      <span class="muted" id="who">Demo Admin</span>
+      <button class="iconbtn" title="Logout" onclick="show('login')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg></button>
+    </header>
+
+    <main>
+      <!-- DASHBOARD -->
+      <section id="page-dashboard">
+        <h1>Welcome, Demo Admin</h1>
+        <p class="sub">Here's what's happening today.</p>
+        <div class="grid g4" style="margin-top:20px">
+          <div class="card"><div class="ph pt">Students</div><div class="pb">1,248</div></div>
+          <div class="card"><div class="ph pt">Teachers</div><div class="pb">76</div></div>
+          <div class="card"><div class="ph pt">Absences today</div><div class="pb">3</div></div>
+          <div class="card"><div class="ph pt">Pending reviews</div><div class="pb">5</div></div>
+        </div>
+        <div class="grid g3" style="margin-top:16px">
+          <a class="quick" onclick="show('timetable')"><div class="qt">Timetable</div><div class="qd">Create &amp; publish schedules</div></a>
+          <a class="quick" onclick="show('attendance')"><div class="qt">Attendance</div><div class="qd">Daily &amp; period-wise marking</div></a>
+          <a class="quick" onclick="show('substitution')"><div class="qt">Substitution</div><div class="qd">Smart substitute workflow</div></a>
+          <a class="quick" onclick="show('assessments')"><div class="qt">Assessments</div><div class="qd">Question banks &amp; results</div></a>
+          <a class="quick" onclick="show('analytics')"><div class="qt">Analytics</div><div class="qd">Progress &amp; workload reports</div></a>
+          <a class="quick" onclick="show('ai')"><div class="qt">AI Studio</div><div class="qd">Generate content with human review</div></a>
+        </div>
+      </section>
+
+      <!-- STUDENTS -->
+      <section id="page-students" class="block">
+        <h1>Students</h1><p class="sub">Admissions, profiles, guardians and enrollment.</p>
+        <div class="toolbar">
+          <button class="btn primary">+ New student</button>
+          <input class="btn" style="width:220px;text-align:left" placeholder="Search name / roll no…" />
+        </div>
+        <div class="card"><table>
+          <thead><tr><th>Roll No</th><th>Name</th><th>Class</th><th>Guardian</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>1001</td><td>Aarav Sharma</td><td>Grade 10 - A</td><td>Raj Sharma</td><td><span class="pill">Active</span></td></tr>
+            <tr><td>1002</td><td>Diya Patel</td><td>Grade 10 - A</td><td>Meera Patel</td><td><span class="pill">Active</span></td></tr>
+            <tr><td>1003</td><td>Kabir Singh</td><td>Grade 10 - B</td><td>Amar Singh</td><td><span class="pill">Active</span></td></tr>
+            <tr><td>1004</td><td>Ananya Iyer</td><td>Grade 9 - A</td><td>Lakshmi Iyer</td><td><span class="pill">Active</span></td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- TIMETABLE -->
+      <section id="page-timetable" class="block">
+        <h1>Timetable</h1><p class="sub">Create drafts, validate conflicts and publish versioned schedules.</p>
+        <div class="toolbar">
+          <select class="btn"><option>Grade 10 - A</option><option>Grade 10 - B</option></select>
+          <button class="btn">Validate conflicts</button>
+          <button class="btn primary">Publish</button>
+        </div>
+        <div class="alert ok">✓ No hard conflicts detected. 2 soft warnings (teacher overload).</div>
+        <div class="card" style="margin-top:16px"><table>
+          <thead><tr><th>Period</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th></tr></thead>
+          <tbody>
+            <tr><td class="muted">08:00</td><td><span class="pill">Math · R. Verma</span></td><td><span class="pill">Eng · S. Rao</span></td><td><span class="pill">Sci · P. Nair</span></td><td><span class="pill">Math · R. Verma</span></td><td><span class="pill">Eng · S. Rao</span></td></tr>
+            <tr><td class="muted">09:00</td><td><span class="pill">Sci · P. Nair</span></td><td><span class="pill">Math · R. Verma</span></td><td><span class="pill">Eng · S. Rao</span></td><td><span class="pill">Hist · K. Das</span></td><td><span class="pill">Sci · P. Nair</span></td></tr>
+            <tr><td class="muted">10:00</td><td><span class="pill warn">Math · R. Verma</span></td><td><span class="pill">Hist · K. Das</span></td><td><span class="pill">Math · R. Verma</span></td><td><span class="pill">Eng · S. Rao</span></td><td><span class="pill">Hist · K. Das</span></td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ATTENDANCE -->
+      <section id="page-attendance" class="block">
+        <h1>Attendance</h1><p class="sub">Daily and period-wise student attendance, teacher attendance and leave.</p>
+        <div class="toolbar">
+          <select class="btn"><option>Grade 10 - A</option></select>
+          <input class="btn" style="width:160px;text-align:left" value="2026-10-21" />
+          <button class="btn primary">Mark all present</button>
+        </div>
+        <div class="grid g4">
+          <div class="card"><div class="ph pt">Present</div><div class="pb" style="color:#16a34a">38</div></div>
+          <div class="card"><div class="ph pt">Absent</div><div class="pb" style="color:#dc2626">2</div></div>
+          <div class="card"><div class="ph pt">Late</div><div class="pb">1</div></div>
+          <div class="card"><div class="ph pt">Percentage</div><div class="pb">95%</div></div>
+        </div>
+      </section>
+
+      <!-- SUBSTITUTION -->
+      <section id="page-substitution" class="block">
+        <h1>Substitution</h1><p class="sub">Recommend, approve, hand over and record substitute classes.</p>
+        <div class="alert">⚠ <b>R. Verma</b> is absent today (leave approved). 2 periods affected: <b>Mon 08:00 Math</b>, <b>Wed 10:00 Math</b>.</div>
+        <h3 style="margin-top:24px">Recommended substitutes</h3>
+        <div class="card"><table>
+          <thead><tr><th>#</th><th>Teacher</th><th>Subject</th><th>Score</th><th>Reason</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><b>S. Rao</b></td><td>Math</td><td><span class="pill">88</span></td><td class="muted">Same subject · low workload</td><td><button class="btn primary">Approve</button></td></tr>
+            <tr><td>2</td><td><b>K. Das</b></td><td>Math</td><td><span class="pill">71</span></td><td class="muted">Related subject · free period</td><td><button class="btn">Approve</button></td></tr>
+            <tr><td>3</td><td><b>P. Nair</b></td><td>—</td><td><span class="pill">54</span></td><td class="muted">Free period · workload balanced</td><td><button class="btn">Approve</button></td></tr>
+          </tbody>
+        </table></div>
+        <div class="alert ok" style="margin-top:16px">Handover material attached · Outcome: <b>Completed</b> · Syllabus progress updated.</div>
+      </section>
+
+      <!-- ASSESSMENTS -->
+      <section id="page-assessments" class="block">
+        <h1>Assessments</h1><p class="sub">Question banks, tests, marks entry and results.</p>
+        <div class="grid g3">
+          <div class="card"><div class="pad"><div class="pt" style="font-size:15px;font-weight:600">Unit Test 1</div><p class="muted">Math · Grade 10 · 21 Oct 2026</p><span class="badge primary">Scheduled</span></div></div>
+          <div class="card"><div class="pad"><div class="pt" style="font-size:15px;font-weight:600">Mid Term</div><p class="muted">All subjects · Grade 10 · 05 Nov 2026</p><span class="badge">Draft</span></div></div>
+          <div class="card"><div class="pad"><div class="pt" style="font-size:15px;font-weight:600">Quiz — Algebra</div><p class="muted">20 questions · auto-graded</p><span class="badge primary">Completed</span></div></div>
+        </div>
+      </section>
+
+      <!-- AI -->
+      <section id="page-ai" class="block">
+        <h1>AI Studio</h1><p class="sub">Generate questions and materials — always behind human review.</p>
+        <div class="alert warn">AI output is never published automatically. A coordinator must review and approve it first.</div>
+        <div class="card" style="margin-top:16px"><div class="pad">
+          <div class="pt" style="font-size:15px;font-weight:600">Generated: 10 MCQs on Quadratic Equations</div>
+          <p class="muted">Model gpt-4o-mini · status <b>Pending review</b></p>
+          <div class="toolbar"><button class="btn primary">Approve</button><button class="btn">Reject</button></div>
+        </div></div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="page-settings" class="block">
+        <h1>Settings</h1><p class="sub">Institution profile, roles, academic structure and system settings.</p>
+        <div class="grid g3">
+          <div class="card"><div class="pad"><b>Institution</b><p class="muted">Profile, domains, branding</p></div></div>
+          <div class="card"><div class="pad"><b>Roles &amp; Permissions</b><p class="muted">Coordinator, teacher, parent…</p></div></div>
+          <div class="card"><div class="pad"><b>Academic Structure</b><p class="muted">Years, terms, classes, subjects</p></div></div>
+          <div class="card"><div class="pad"><b>Notifications</b><p class="muted">Templates, providers, logs</p></div></div>
+          <div class="card"><div class="pad"><b>Backups</b><p class="muted">Schedule + restore test</p></div></div>
+          <div class="card"><div class="pad"><b>Audit Log</b><p class="muted">Every correction, searchable</p></div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+  function show(view){
+    ["login","dashboard"].forEach(v=>{
+      const el=document.getElementById("view-"+v);
+      if(el) el.classList.toggle("show", v===view || (view!=="login" && v==="dashboard"));
+    });
+    document.querySelectorAll("main > section").forEach(s=>s.classList.remove("show"));
+    if(view!=="login"){
+      document.getElementById("view-dashboard").classList.add("show");
+      const page=document.getElementById("page-"+view);
+      if(page) page.classList.add("show");
+      document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("active", a.dataset.view===view));
+    }
+    window.scrollTo(0,0);
+  }
+  show("login");
+</script>
+</body>
+</html>
