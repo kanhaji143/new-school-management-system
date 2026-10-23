@@ -59,6 +59,19 @@ $apiUrl    = "$publicUrl/api"
 if (Test-Path $rcOut) { Copy-Item $rcPublic $rcOut -Force }
 Write-Host "runtime-config.js -> $apiUrl"
 
+# Bump the runtime-config cache-buster inside the built HTML so browsers never
+# reuse a cached copy of the config from an older deploy (no rebuild needed).
+$stamp = [string][DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+$htmlFiles = Get-ChildItem (Join-Path $root "frontend\out") -Recurse -Filter *.html -ErrorAction SilentlyContinue
+foreach ($f in $htmlFiles) {
+    $content = Get-Content $f.FullName -Raw
+    if ($content -match 'runtime-config\.js\?v=[^"]*') {
+        $content = [regex]::Replace($content, 'runtime-config\.js\?v=[^"]*', "runtime-config.js?v=$stamp")
+        Set-Content $f.FullName -Value $content -Encoding UTF8 -NoNewline
+    }
+}
+Write-Host "Cache-buster bumped to $stamp in $($htmlFiles.Count) HTML files."
+
 Push-Location (Join-Path $root "frontend")
 try {
     npx --yes firebase-tools deploy --only hosting --project new-school-management-system
